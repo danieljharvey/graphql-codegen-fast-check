@@ -1,0 +1,5 @@
+schema: ./test/twitter-schema.graphql
+# documents: './src/**/*.graphql'
+generates:
+  ./dist/index.js:
+  - ./output/output.ts:

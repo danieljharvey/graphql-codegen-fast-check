@@ -1,0 +1,3 @@
+dist/
+output/*.ts
+node_modules/
