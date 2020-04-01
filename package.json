@@ -4,24 +4,29 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@types/prettier": "^1.19.1",
     "fast-check": "^1.23.0",
-    "jest-runner-tsc": "^1.6.0",
-    "prettier": "^2.0.2",
-    "tsutils": "^3.17.1",
-    "typescript": "^3.8.3"
+    "prettier": "^2.0.2"
   },
   "scripts": {
     "build": "tsc",
     "codegen": "graphql-codegen",
     "typescript:watch": "tsc --noEmit --watch",
-    "test": "./test.sh"
+    "test": "./test.sh && jest -c jest.tsc.config.js",
+    "test:watch": "./test.sh && jest -c jest.tsc.config.js --watch"
   },
   "devDependencies": {
     "@types/graphql": "^14.5.0",
     "@types/jest": "^25.1.4",
     "@types/node": "^13.9.8",
+    "@types/prettier": "^1.19.1",
     "graphql": "^14.6.0",
-    "jest": "^25.2.4"
+    "jest": "^25.2.4",
+    "jest-runner-tsc": "^1.6.0",
+    "typescript": "^3.8.3",
+    "@graphql-codegen/cli": "^1.13.1"
+  },
+  "peerDependencies": {
+    "@graphql-codegen/cli": "^1.13.1",
+    "graphql": "^14.6.0"
   }
 }

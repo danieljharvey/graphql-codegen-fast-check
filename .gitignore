@@ -1,3 +1,4 @@
+yarn-error.log
 dist/
 output/*.ts
 node_modules/
