@@ -56,6 +56,11 @@ const withEnum = (values: readonly EnumValueDefinitionNode[]) => {
   return `fc.oneof(${v})`;
 };
 
+const withUnion = (types: readonly NamedTypeNode[]): string => {
+  const nodes = types.map(withNamedFieldType).join(", ");
+  return `fc.oneof(${nodes})`;
+};
+
 const withAstNode = (node: TypeDefinitionNode): [Kind, string] => {
   switch (node.kind) {
     case "ScalarTypeDefinition":
@@ -66,12 +71,13 @@ const withAstNode = (node: TypeDefinitionNode): [Kind, string] => {
       // not yet supported
       return ["InputObject", ""];
     case "InterfaceTypeDefinition":
-      throw "Haven't implemented Interface yet";
+      // not yet supported
+      return ["Interface", ""];
     case "ObjectTypeDefinition":
       const fields = (node.fields || []).map(withField);
       return ["Object", `fc.record({${fields.join(",")}})`];
     case "UnionTypeDefinition":
-      throw "Haven't implemented Union yet";
+      return ["Union", withUnion(node.types || [])];
   }
 };
 
@@ -85,6 +91,8 @@ const withPrimitive = (node: GraphQLNamedType): string | null => {
       return "fc.string()";
     case "ID":
       return `fc.string()`;
+    case "Float":
+      return `fc.float()`;
   }
   // console.log(`Primitive ${node.name} not found`);
 
@@ -93,7 +101,14 @@ const withPrimitive = (node: GraphQLNamedType): string | null => {
 
 const getArbitraryName = (typeName: TypeName): string => `arbitrary${typeName}`;
 
-type Kind = "Object" | "Scalar" | "Primitive" | "Enum" | "InputObject";
+type Kind =
+  | "Object"
+  | "Scalar"
+  | "Primitive"
+  | "Enum"
+  | "Union"
+  | "InputObject"
+  | "Interface";
 type NamedType = [Kind, TypeName, string];
 
 const getNamedTypes = (schema: GraphQLSchema): GraphQLNamedType[] => {
@@ -155,13 +170,21 @@ const getSchemaDeclarations = (schema: GraphQLSchema): string => {
     .map(render)
     .join("\n");
 
-  const objects = sortASTs(
-    namedTypes.map(withNamedType).filter(notNull).filter(byKind("Object"))
-  )
+  const unions = namedTypes
+    .map(withNamedType)
+    .filter(notNull)
+    .filter(byKind("Union"));
+
+  const objects = namedTypes
+    .map(withNamedType)
+    .filter(notNull)
+    .filter(byKind("Object"));
+
+  const mixed = sortASTs([...unions, ...objects])
     .map(render)
     .join("\n");
 
-  return `${primitives}\n${enums}\n${scalars}\n${objects}`;
+  return `${primitives}\n${enums}\n${scalars}\n${mixed}`;
 };
 
 // if one object mentions another definition, put it after that definition
