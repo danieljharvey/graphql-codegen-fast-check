@@ -6,5 +6,8 @@ set -euxo pipefail
 # compile typescript
 yarn build
 
-# run codegen
-yarn graphql-codegen --verbose --config ./test/codegen.yml
+# run codegen basic
+yarn graphql-codegen --config ./test/codegen.yml
+
+# run complex one
+yarn graphql-codegen --config ./test/codegen-github.yml
