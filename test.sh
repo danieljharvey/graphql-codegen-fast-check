@@ -8,6 +8,3 @@ yarn build
 
 # run codegen basic
 yarn graphql-codegen --config ./test/codegen.yml
-
-# run complex one
-yarn graphql-codegen --config ./test/codegen-github.yml

@@ -4,7 +4,8 @@ import {
   TypeDefinitionNode,
   GraphQLNamedType,
   FieldDefinitionNode,
-  TypeNode
+  TypeNode,
+  EnumValueDefinitionNode
 } from "graphql";
 import { format } from "prettier";
 import * as fc from "fast-check";
@@ -45,14 +46,25 @@ const withField = (field: FieldDefinitionNode): string => {
   return `${fieldName}: ${fieldType}`;
 };
 
+const withEnum = (values: readonly EnumValueDefinitionNode[]) => {
+  const v = values
+    .map(value => {
+      const val = value.name.value;
+      return `fc.constant("${val}")`;
+    })
+    .join(", ");
+  return `fc.oneof(${v})`;
+};
+
 const withAstNode = (node: TypeDefinitionNode): [Kind, string] => {
   switch (node.kind) {
     case "ScalarTypeDefinition":
       return ["Scalar", `fc.anything()`];
     case "EnumTypeDefinition":
-      throw "Haven't implemented Enums yet";
+      return ["Enum", withEnum(node.values || [])];
     case "InputObjectTypeDefinition":
-      throw "Haven't implemented InputObject yet";
+      // not yet supported
+      return ["InputObject", ""];
     case "InterfaceTypeDefinition":
       throw "Haven't implemented Interface yet";
     case "ObjectTypeDefinition":
@@ -81,7 +93,7 @@ const withPrimitive = (node: GraphQLNamedType): string | null => {
 
 const getArbitraryName = (typeName: TypeName): string => `arbitrary${typeName}`;
 
-type Kind = "Object" | "Scalar" | "Primitive";
+type Kind = "Object" | "Scalar" | "Primitive" | "Enum" | "InputObject";
 type NamedType = [Kind, TypeName, string];
 
 const getNamedTypes = (schema: GraphQLSchema): GraphQLNamedType[] => {
@@ -136,13 +148,20 @@ const getSchemaDeclarations = (schema: GraphQLSchema): string => {
     .map(render)
     .join("\n");
 
+  const enums = namedTypes
+    .map(withNamedType)
+    .filter(notNull)
+    .filter(byKind("Enum"))
+    .map(render)
+    .join("\n");
+
   const objects = sortASTs(
     namedTypes.map(withNamedType).filter(notNull).filter(byKind("Object"))
   )
     .map(render)
     .join("\n");
 
-  return `${primitives}\n${scalars}\n${objects}`;
+  return `${primitives}\n${enums}\n${scalars}\n${objects}`;
 };
 
 // if one object mentions another definition, put it after that definition
