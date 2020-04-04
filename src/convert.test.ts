@@ -1,5 +1,6 @@
 // import { arbitraryQuery } from "../output/output";
 import * as Codegen from "./convert";
+import * as Types from "./types";
 
 describe("includesOneOf", () => {
   it("Makes any sense whatsoever", () => {
@@ -18,26 +19,30 @@ describe("includesOneOf", () => {
 
 describe("sortASTs", () => {
   it("Puts mentions later", () => {
-    const stable: Codegen.NamedType = [
-      "Object",
-      "Stable" as Codegen.TypeName,
-      "fc.record({horse: arbitraryHorse })"
-    ];
-    const horse: Codegen.NamedType = [
-      "Object",
-      "Horse" as Codegen.TypeName,
-      "fc.record({saddle: arbitrarySaddle})"
-    ];
-    const saddle: Codegen.NamedType = [
-      "Object",
-      "Saddle" as Codegen.TypeName,
-      "fc.record({chair: arbitraryChair})"
-    ];
-    const things: Codegen.NamedType = [
-      "Union",
-      "Things" as Codegen.TypeName,
-      "fc.oneof(arbitraryStable, arbitrarySaddle)"
-    ];
+    const stable: Types.Output = {
+      kind: "Object",
+      name: "Stable" as Types.TypeName,
+      output: "fc.record({horse: arbitraryHorse })" as Types.Generated,
+      deps: [],
+    };
+    const horse: Types.Output = {
+      kind: "Object",
+      name: "Horse" as Types.TypeName,
+      output: "fc.record({saddle: arbitrarySaddle})" as Types.Generated,
+      deps: [],
+    };
+    const saddle: Types.Output = {
+      kind: "Object",
+      name: "Saddle" as Types.TypeName,
+      output: "fc.record({chair: arbitraryChair})" as Types.Generated,
+      deps: [],
+    };
+    const things: Types.Output = {
+      kind: "Union",
+      name: "Things" as Types.TypeName,
+      output: "fc.oneof(arbitraryStable, arbitrarySaddle)" as Types.Generated,
+      deps: [],
+    };
     const expectedOrder = [saddle, horse, stable, things];
     expect(Codegen.sortASTs([things, stable, horse, saddle])).toStrictEqual(
       expectedOrder
@@ -48,46 +53,57 @@ describe("sortASTs", () => {
   });
 
   it("Does the twitter ones", () => {
-    const Query: Codegen.NamedType = [
-      "Object",
-      "Query" as Codegen.TypeName,
-      `fc.record({Tweet: arbitraryTweet,Tweets: fc.array(arbitraryTweet),TweetsMeta: arbitraryMeta,User: arbitraryUser,Notifications: fc.array(arbitraryNotification),NotificationsMeta: arbitraryMeta})`
-    ];
-    const Tweet: Codegen.NamedType = [
-      "Object",
-      "Tweet" as Codegen.TypeName,
-      `fc.record({id: arbitraryID,body: arbitraryString,date: arbitraryDate,Author: arbitraryUser,Stats: arbitraryStat})`
-    ];
-    const User: Codegen.NamedType = [
-      "Object",
-      "User" as Codegen.TypeName,
-      `fc.record({id: arbitraryID,username: arbitraryString,first_name: arbitraryString,last_name: arbitraryString,full_name: arbitraryString,name: arbitraryString,avatar_url: arbitraryUrl})`
-    ];
-    const Stat: Codegen.NamedType = [
-      "Object",
-      "Stat" as Codegen.TypeName,
-      `fc.record({views: arbitraryInt,likes: arbitraryInt,retweets: arbitraryInt,responses: arbitraryInt})`
-    ];
-    const Meta: Codegen.NamedType = [
-      "Object",
-      "Meta" as Codegen.TypeName,
-      `fc.record({count: arbitraryInt})`
-    ];
-    const Notification: Codegen.NamedType = [
-      "Object",
-      "Notification" as Codegen.TypeName,
-      `fc.record({id: arbitraryID,date: arbitraryDate,type: arbitraryString})`
-    ];
-    const Mutation: Codegen.NamedType = [
-      "Object",
-      "Mutation" as Codegen.TypeName,
-      `fc.record({createTweet: arbitraryTweet,deleteTweet: arbitraryTweet,markTweetRead: arbitraryBoolean})`
-    ];
-    const StatOrNotification: Codegen.NamedType = [
-      "Union",
-      "StatOrNotification" as Codegen.TypeName,
-      `fc.oneof(arbitraryStat, arbitraryNotification)`
-    ];
+    const Query: Types.Output = {
+      kind: "Object",
+      name: "Query" as Types.TypeName,
+      output: `fc.record({Tweet: arbitraryTweet,Tweets: fc.array(arbitraryTweet),TweetsMeta: arbitraryMeta,User: arbitraryUser,Notifications: fc.array(arbitraryNotification),NotificationsMeta: arbitraryMeta})` as Types.Generated,
+      deps: [],
+    };
+    const Tweet: Types.Output = {
+      kind: "Object",
+      name: "Tweet" as Types.TypeName,
+      output: `fc.record({id: arbitraryID,body: arbitraryString,date: arbitraryDate,Author: arbitraryUser,Stats: arbitraryStat})` as Types.Generated,
+      deps: [],
+    };
+    const User: Types.Output = {
+      kind: "Object",
+      name: "User" as Types.TypeName,
+      output: `fc.record({id: arbitraryID,username: arbitraryString,first_name: arbitraryString,last_name: arbitraryString,full_name: arbitraryString,name: arbitraryString,avatar_url: arbitraryUrl})` as Types.Generated,
+      deps: [],
+    };
+    const Stat: Types.Output = {
+      kind: "Object",
+      name: "Stat" as Types.TypeName,
+      output: `fc.record({views: arbitraryInt,likes: arbitraryInt,retweets: arbitraryInt,responses: arbitraryInt})` as Types.Generated,
+      deps: [],
+    };
+    const Meta: Types.Output = {
+      kind: "Object",
+      name: "Meta" as Types.TypeName,
+      output: `fc.record({count: arbitraryInt})` as Types.Generated,
+      deps: [],
+    };
+
+    const Notification: Types.Output = {
+      kind: "Object",
+      name: "Notification" as Types.TypeName,
+      output: `fc.record({id: arbitraryID,date: arbitraryDate,type: arbitraryString})` as Types.Generated,
+      deps: [],
+    };
+
+    const Mutation: Types.Output = {
+      kind: "Object",
+      name: "Mutation" as Types.TypeName,
+      output: `fc.record({createTweet: arbitraryTweet,deleteTweet: arbitraryTweet,markTweetRead: arbitraryBoolean})` as Types.Generated,
+      deps: [],
+    };
+
+    const StatOrNotification: Types.Output = {
+      kind: "Union",
+      name: "StatOrNotification" as Types.TypeName,
+      output: `fc.oneof(arbitraryStat, arbitraryNotification)` as Types.Generated,
+      deps: [],
+    };
 
     const expectedTweetOrder = [
       User,
@@ -97,7 +113,7 @@ describe("sortASTs", () => {
       Notification,
       Query,
       Mutation,
-      StatOrNotification
+      StatOrNotification,
     ];
     expect(
       Codegen.sortASTs([
@@ -108,7 +124,7 @@ describe("sortASTs", () => {
         Meta,
         Notification,
         Mutation,
-        StatOrNotification
+        StatOrNotification,
       ])
     ).toStrictEqual(expectedTweetOrder);
   });
