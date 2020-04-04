@@ -30,7 +30,8 @@ type FieldReturn = {
 
 const withNamedFieldType = (namedTypeNode: NamedTypeNode): FieldReturn => {
   const name = namedTypeNode.name.value as TypeName;
-  return { output: getArbitraryName(name), deps: [name] };
+  const output = `${getArbitraryName(name)}()` as Generated;
+  return { output, deps: [name] };
 };
 
 const withFieldType = (typeNode: TypeNode): FieldReturn => {
@@ -86,7 +87,7 @@ const withAstNode = (name: TypeName, node: TypeDefinitionNode): Output => {
       return {
         kind: "Scalar",
         name,
-        output: `fc.anything()` as Generated,
+        output: `fc.string()` as Generated,
         deps: []
       };
     case "EnumTypeDefinition":
@@ -101,7 +102,7 @@ const withAstNode = (name: TypeName, node: TypeDefinitionNode): Output => {
       return {
         kind: "InputObject",
         name,
-        output: "fc.anything()" as Generated,
+        output: "fc.string()" as Generated,
         deps: []
       };
     case "InterfaceTypeDefinition":
@@ -153,7 +154,7 @@ const withPrimitive = (node: GraphQLNamedType): Generated | null => {
 };
 
 const getArbitraryName = (typeName: TypeName): Generated =>
-  `arbitrary${typeName}` as Generated;
+  `getArbitrary${typeName}` as Generated;
 
 const getNamedTypes = (schema: GraphQLSchema): GraphQLNamedType[] => {
   const typesMap = schema.getTypeMap();
@@ -192,13 +193,17 @@ const removeKind = (k: Kind) => (a: Output) => a.kind !== k;
 
 const render = (val: Output) => {
   const { name, output } = val;
-  return `export const ${getArbitraryName(name)} = ${output}`;
+  return `export const ${getArbitraryName(
+    name
+  )} = (): fc.Arbitrary<any> => ${output}`;
 };
 
 export const getSchemaDeclarations = (schema: GraphQLSchema): string =>
-  sortASTs(getNamedTypes(schema).map(withNamedType).filter(notNull))
+  sortASTs2(getNamedTypes(schema).map(withNamedType).filter(notNull))
     .map(render)
     .join("\n\n");
+
+const sortASTs2 = <A>(a: A): A => a;
 
 const filterSplit = <A>(
   as: A[],

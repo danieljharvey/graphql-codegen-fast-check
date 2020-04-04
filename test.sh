@@ -4,7 +4,7 @@
 set -euxo pipefail
 
 # remove old output so it doesn't get typechecked
-rm ./output/output.ts || true
+echo "export const a = 1" | tee ./output/output.ts
 
 # run tests
 yarn test
@@ -17,3 +17,6 @@ yarn graphql-codegen --config ./test/codegen.yml
 
 # typecheck result
 yarn tsc --noEmit ./output/output.ts
+
+# output some shit
+yarn ts-node ./output/test-output.ts
