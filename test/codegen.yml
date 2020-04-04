@@ -1,4 +1,4 @@
-schema: ./test/github-schema.graphql
+schema: ./test/test-schema.graphql
 # documents: './src/**/*.graphql'
 generates:
   ./output/output.ts:

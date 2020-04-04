@@ -33,8 +33,6 @@ type Notification {
   type: String
 }
 
-union StatOrNotification = Stat | Notification
-
 type Meta {
   count: Int
 }
@@ -81,6 +79,13 @@ input AddCommentInput {
 scalar Url
 scalar Date
 
+interface Deletable {
+  """
+  Check if the current viewer can delete this object.
+  """
+  viewerCanDelete: Boolean!
+}
+
 type Query {
   Tweet(id: ID!): Tweet
   Tweets(limit: Int, skip: Int, sort_field: String, sort_order: String): [Tweet]
@@ -95,3 +100,5 @@ type Mutation {
   deleteTweet(id: ID!): Tweet
   markTweetRead(id: ID!): Boolean
 }
+
+# union StatOrNotification = Stat | Notification
