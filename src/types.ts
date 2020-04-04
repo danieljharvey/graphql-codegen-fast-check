@@ -2,6 +2,30 @@ export type Maybe<T> = null | undefined | T;
 
 ///
 
+export type Either<E, A> =
+  | { _tag: "Left"; error: E }
+  | { _tag: "Right"; payload: A };
+
+export const left = <E, A>(error: E): Either<E, A> => ({
+  _tag: "Left",
+  error
+});
+
+export const right = <E, A>(payload: A): Either<E, A> => ({
+  _tag: "Right",
+  payload
+});
+
+export const caseEither = <E, A, B>(
+  either: Either<E, A>,
+  cases: { onLeft: (e: E) => B; onRight: (a: A) => B }
+): B =>
+  either._tag === "Left"
+    ? cases.onLeft(either.error)
+    : cases.onRight(either.payload);
+
+///
+
 type Nominal<A> = {
   readonly symbol: A;
 };

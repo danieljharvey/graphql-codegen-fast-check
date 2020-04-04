@@ -88,7 +88,12 @@ interface Deletable {
 
 type Query {
   Tweet(id: ID!): Tweet
-  Tweets(limit: Int, skip: Int, sort_field: String, sort_order: String): [Tweet]
+  Tweets(
+    limit: Int
+    skip: Int
+    sort_field: String
+    sort_order: String
+  ): [Tweet]
   TweetsMeta: Meta
   User(id: ID!): User
   Notifications(limit: Int): [Notification]
@@ -101,4 +106,4 @@ type Mutation {
   markTweetRead(id: ID!): Boolean
 }
 
-# union StatOrNotification = Stat | Notification
+union StatOrNotification = Stat | Notification

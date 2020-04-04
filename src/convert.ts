@@ -5,10 +5,20 @@ import {
   GraphQLNamedType,
   FieldDefinitionNode,
   TypeNode,
-  EnumValueDefinitionNode,
+  EnumValueDefinitionNode
 } from "graphql";
 import * as fc from "fast-check";
-import { TypeName, Maybe, Output, Kind, Generated } from "./types";
+import {
+  TypeName,
+  Maybe,
+  Output,
+  Kind,
+  Generated,
+  Either,
+  left,
+  right,
+  caseEither
+} from "./types";
 
 const nodeName = (node: TypeDefinitionNode): TypeName =>
   node ? (node.name.value as TypeName) : ("no node" as TypeName);
@@ -30,7 +40,7 @@ const withFieldType = (typeNode: TypeNode): FieldReturn => {
     const internalType = withFieldType(typeNode.type);
     return {
       output: `fc.array(${internalType.output})` as Generated,
-      deps: internalType.deps,
+      deps: internalType.deps
     };
   } else {
     // therefore typeNode.kind === 'NonNullType'
@@ -44,13 +54,13 @@ const withField = (field: FieldDefinitionNode): FieldReturn => {
   const fieldType = withFieldType(field.type);
   return {
     output: `${fieldName}: ${fieldType.output}` as Generated,
-    deps: fieldType.deps,
+    deps: fieldType.deps
   };
 };
 
 const withEnum = (values: readonly EnumValueDefinitionNode[]): Generated => {
   const v = values
-    .map((value) => {
+    .map(value => {
       const val = value.name.value;
       return `fc.constant("${val}")`;
     })
@@ -60,15 +70,15 @@ const withEnum = (values: readonly EnumValueDefinitionNode[]): Generated => {
 
 const withUnion = (types: readonly NamedTypeNode[]): FieldReturn => {
   const fieldReturns = types.map(withNamedFieldType);
-  const output = fieldReturns.map((i) => i.output).join(", ");
+  const output = fieldReturns.map(i => i.output).join(", ");
   return {
     output: `fc.oneof(${output})` as Generated,
-    deps: flattenDeps(fieldReturns),
+    deps: flattenDeps(fieldReturns)
   };
 };
 
 const flattenDeps = (fieldReturns: FieldReturn[]): TypeName[] =>
-  fieldReturns.map((i) => i.deps).reduce((as, a) => as.concat(a), []);
+  fieldReturns.map(i => i.deps).reduce((as, a) => as.concat(a), []);
 
 const withAstNode = (name: TypeName, node: TypeDefinitionNode): Output => {
   switch (node.kind) {
@@ -77,35 +87,40 @@ const withAstNode = (name: TypeName, node: TypeDefinitionNode): Output => {
         kind: "Scalar",
         name,
         output: `fc.anything()` as Generated,
-        deps: [],
+        deps: []
       };
     case "EnumTypeDefinition":
       return {
         kind: "Enum",
         name,
         output: withEnum(node.values || []),
-        deps: [],
+        deps: []
       };
     case "InputObjectTypeDefinition":
-      // not yet supported
-      return { kind: "InputObject", name, output: "" as Generated, deps: [] };
+      // this is awful
+      return {
+        kind: "InputObject",
+        name,
+        output: "fc.anything()" as Generated,
+        deps: []
+      };
     case "InterfaceTypeDefinition":
       const iFieldReturns = (node.fields || []).map(withField);
-      const iFieldOutput = iFieldReturns.map((i) => i.output).join(",");
+      const iFieldOutput = iFieldReturns.map(i => i.output).join(",");
       return {
         kind: "Interface",
         name,
         output: `fc.record({${iFieldOutput}})` as Generated,
-        deps: flattenDeps(iFieldReturns),
+        deps: flattenDeps(iFieldReturns)
       };
     case "ObjectTypeDefinition":
       const oFieldReturns = (node.fields || []).map(withField);
-      const oFieldOutput = oFieldReturns.map((i) => i.output).join(",");
+      const oFieldOutput = oFieldReturns.map(i => i.output).join(",");
       return {
         kind: "Object",
         name,
         output: `fc.record({${oFieldOutput}})` as Generated,
-        deps: flattenDeps(oFieldReturns),
+        deps: flattenDeps(oFieldReturns)
       };
     case "UnionTypeDefinition":
       const uFieldReturns = withUnion(node.types || []);
@@ -114,7 +129,7 @@ const withAstNode = (name: TypeName, node: TypeDefinitionNode): Output => {
         kind: "Union",
         name,
         output: uFieldReturns.output,
-        deps: uFieldReturns.deps,
+        deps: uFieldReturns.deps
       };
   }
 };
@@ -143,7 +158,7 @@ const getArbitraryName = (typeName: TypeName): Generated =>
 const getNamedTypes = (schema: GraphQLSchema): GraphQLNamedType[] => {
   const typesMap = schema.getTypeMap();
   const namedTypes: Maybe<GraphQLNamedType>[] = Object.keys(typesMap).map(
-    (key) => {
+    key => {
       const item = schema.getType(key);
       return item || null;
     }
@@ -163,7 +178,7 @@ const withNamedType = (item: GraphQLNamedType): Output | null => {
         kind: "Primitive",
         name: item.name as TypeName,
         output: prim,
-        deps: [],
+        deps: []
       };
     } else {
       return null;
@@ -173,100 +188,107 @@ const withNamedType = (item: GraphQLNamedType): Output | null => {
 
 const notNull = <A>(a: A | null): a is A => a !== null;
 
-const byKind = (k: Kind) => (a: Output) => a.kind === k;
+const removeKind = (k: Kind) => (a: Output) => a.kind !== k;
 
 const render = (val: Output) => {
   const { name, output } = val;
   return `export const ${getArbitraryName(name)} = ${output}`;
 };
 
-const logThen = <A>(a: A): A => {
-  console.log(a);
-  return a;
-};
-
-export const getSchemaDeclarations = (schema: GraphQLSchema): string => {
-  const namedTypes = getNamedTypes(schema);
-
-  const primitives = namedTypes
-    .map(withNamedType)
-    //.map(logThen)
-    .filter(notNull)
-    .filter(byKind("Primitive"))
+export const getSchemaDeclarations = (schema: GraphQLSchema): string =>
+  sortASTs(getNamedTypes(schema).map(withNamedType).filter(notNull))
     .map(render)
-    .join("\n");
+    .join("\n\n");
 
-  const scalars = namedTypes
-    .map(withNamedType)
-    //.map(logThen)
-    .filter(notNull)
-    .filter(byKind("Scalar"))
-    .map(render)
-    .join("\n");
+const filterSplit = <A>(
+  as: A[],
+  f: (a: A) => boolean
+): { yes: A[]; no: A[] } => ({
+  yes: as.filter(f),
+  no: as.filter(a => !f(a))
+});
 
-  const enums = namedTypes
-    .map(withNamedType)
-    //.map(logThen)
-    .filter(notNull)
-    .filter(byKind("Enum"))
-    .map(render)
-    .join("\n");
-
-  const unions = namedTypes
-    .map(withNamedType)
-    //.map(logThen)
-    .filter(notNull)
-    .filter(byKind("Union"));
-
-  const interfaces = namedTypes
-    .map(withNamedType)
-    //.map(logThen)
-    .filter(notNull)
-    .filter(byKind("Interface"));
-
-  const objects = namedTypes
-    .map(withNamedType)
-    //.map(logThen)
-    .filter(notNull)
-    .filter(byKind("Object"));
-
-  const mixed = sortASTs([...unions, ...objects, ...interfaces])
-    .map(render)
-    .join("\n");
-
-  return `${primitives}\n${enums}\n${scalars}\n${mixed}`;
-};
-
-const findableKeys = (key: TypeName) => [
-  `${getArbitraryName(key)},`,
-  `${getArbitraryName(key)})`,
-  `${getArbitraryName(key)}}`,
-  `${getArbitraryName(key)} `,
-];
-
-export const includesOneOf = (val: string, opts: string[]): boolean =>
-  opts
-    .map((opt) => val.includes(opt))
-    .reduce((total, value) => total || value, false);
-
-// if one object mentions another definition, put it after that definition
-export const sortASTs = (as: Output[]): Output[] =>
-  [...as].sort(
-    ({ name: key, output: val }, { name: newKey, output: newVal }) => {
-      // console.log(`${_a}: ${key}: ${val}`);
-      // console.log(`${_b}: ${newKey}: ${newVal}`);
-      const leftMentionsRight = includesOneOf(newVal, findableKeys(key));
-      const rightMentionsLeft = includesOneOf(val, findableKeys(newKey));
-      if (leftMentionsRight) {
-        // console.log(`moving ${key} left to avoid ${newKey}:${newVal}`);
-        return -1; // move left before right
-      } else if (rightMentionsLeft) {
-        // console.log(`${newKey} moves left to go before ${key}:${val}`);
-        return 1; // move right before left
-      }
-      /*console.log(
-      `Not moving ${key} because it's not found in ${newKey}:${newVal}`
-    );*/
-      return 0;
+export const sortASTs = (as: Output[]): Output[] => {
+  const limit = 10000;
+  return caseEither(magicSort(as, limit), {
+    onRight: payload => payload,
+    onLeft: err => {
+      throw err;
+      return [];
     }
+  });
+};
+
+const showProgress = (used: Output[], remaining: Output[]): void => {
+  const unresolved = [
+    ...new Set(remaining.map(a => a.deps).reduce((as, a) => as.concat(a), []))
+  ];
+  const resolved = used.map(a => a.name);
+  console.log("RESOLVED", resolved);
+  console.log("UNRESOLVED", unresolved);
+};
+
+export const magicSort = (
+  as: Output[],
+  startingLimit: number
+): Either<string, Output[]> => {
+  let limit = startingLimit;
+  let newRemaining = as;
+  let newUsed: Output[] = [];
+  let error = `Could not resolve ordering within ${startingLimit} tries`;
+  while (newRemaining.length > 0 && limit > 0) {
+    const succeeded = caseEither(moveASTs(newUsed, newRemaining), {
+      onRight: payload => {
+        newUsed = payload.used;
+        newRemaining = payload.remaining;
+        limit = limit - 1;
+        return true;
+      },
+      onLeft: err => {
+        error = err;
+        return false;
+      }
+    });
+    // showProgress(newUsed, newRemaining);
+    if (!succeeded) {
+      break;
+    }
+  }
+  if (newRemaining.length > 0) {
+    return left(error);
+  }
+  return right(newUsed);
+};
+
+type ASTReturn = Either<
+  string,
+  {
+    used: Output[];
+    remaining: Output[];
+  }
+>;
+
+export const moveASTs = (used: Output[], remaining: Output[]): ASTReturn => {
+  // remove everything in used from deps list
+  const usedDeps = used.map(a => a.name);
+
+  const remainingFiltered = remaining.map(a => ({
+    ...a,
+    deps: a.deps.filter(dep => !usedDeps.includes(dep))
+  }));
+
+  // move everything with empty deps list left
+  const { yes: moved, no: keep } = filterSplit(
+    remainingFiltered,
+    a => a.deps.length === 0
   );
+
+  // done
+  const newUsed = [...used, ...moved];
+  if (newUsed.length === used.length) {
+    return left(
+      `No changes made, unresolvable. ${newUsed.length} moved, ${keep.length} remaining to move.`
+    );
+  }
+  return right({ used: newUsed, remaining: keep });
+};
