@@ -43,7 +43,29 @@ This library is a plugin for `GraphQL Code Generator` that creates `fast-check`
 
 ## How to use
 
-_ahem_
+Add the library to your project (and GraphQL Codegen if you need it):
+
+```bash
+yarn add graphql-codegen-fast-check @graphql-codegen/cli
+```
+
+Create a `codegen.yml` file.
+
+```yaml
+schema: path-to-my-graphql-schema.graphql
+generates:
+  output.ts:
+    - graphql-codegen-fast-check
+```
+
+Then run the generator in the same folder as your `codegen.yml` file:
+
+```bash
+yarn graphql-codegen
+```
+
+(hopefully) Success! You should have an `output.ts` folder full of `arbitrary`s
+you can use in your project.
 
 ## What's working?
 
