@@ -8,7 +8,7 @@ types to ensure the consuming program agrees with the data it is receiving.
 
 [Fast-check](https://github.com/dubzzz/fast-check) is a Property Testing
 framework for `Typescript` / `Javascript`. It allows testing properties of a
-program using arbitrarily generated data. `Fast-check` uses `Arbitrary`s to
+program using arbitrarily generated data. `Fast-check` uses `arbitrary`s to
 create data, that is, descriptions of the data we need to create.
 
 Say we have this datatype...
@@ -21,7 +21,7 @@ interface Person {
 }
 ```
 
-...the arbitrary would look like:
+...the code to make the `fast-check` `arbitrary` would look like:
 
 ```typescript
 import * as fc from "fast-check";
@@ -33,7 +33,8 @@ const personArbitrary = fc.record({
 ```
 
 This can then be used in property tests or as generators to create sample test
-data.
+data. The problem is that writing them all by hand and keeping them up to date
+with your datatypes is a pain.
 
 ## This library
 
@@ -43,3 +44,31 @@ This library is a plugin for `GraphQL Code Generator` that creates `fast-check`
 ## How to use
 
 _ahem_
+
+## What's working?
+
+[X] Object types
+[X] Built-in Scalar types
+[X] Enumeration types
+[X] Type modifiers (1)
+[ ] Custom Scalar types (2)
+[X] Union types
+[X] Interface types (3)
+[ ] Input types (4)
+[ ] Documents (5)
+
+1.  Currently lists work but we ignore the nullable / non-nullable distinction.
+    Everything is non-nullable for now, this will come soon.
+2.  Custom Scalar types are defined outside the schema, frustratingly. For now
+    they all emit a `string`, the plan is to allow the config to specify a file
+    to override these with the user's own `arbitrary` instances.
+3.  These "work" but need to check whether they are actually correct
+4.  Currently these just output a `string` (why? don't know) - `fast-check` has
+    a `func` `arbitrary` which should make this fairly straightforward to
+    implement.
+5.  I haven't even thought about tackling this part yet.
+
+## Inspiration
+
+Thanks to [fast-check-io-ts](https://www.npmjs.com/package/fast-check-io-ts)
+for showing me that making `arbitrary` instances should be easy.
