@@ -1,12 +1,11 @@
 {
   "name": "graphql-codegen-fast-check",
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "0.0.1",
+  "author": "Daniel J. Harvey <daniel@internetisverymuchmybusiness.com> (https://danieljharvey.github.io/)",
+  "main": "dist/src/index.js",
   "license": "MIT",
   "dependencies": {
-    "fast-check": "^1.23.0",
-    "prettier": "^2.0.2",
-    "ts-jest": "^25.3.1"
+    "prettier": "^2.0.2"
   },
   "scripts": {
     "build": "tsc",
@@ -17,15 +16,13 @@
     "test:watch": "jest --watch"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0",
-    "@babel/preset-env": "^7.9.0",
-    "@babel/preset-typescript": "^7.9.0",
+    "fast-check": "^1.23.0",
+    "ts-jest": "^25.3.1",
     "@graphql-codegen/cli": "^1.13.1",
     "@types/graphql": "^14.5.0",
     "@types/jest": "^25.1.4",
     "@types/node": "^13.9.8",
     "@types/prettier": "^1.19.1",
-    "babel-jest": "^25.2.6",
     "graphql": "^14.6.0",
     "jest": "^25.2.4",
     "ts-node": "^8.8.1",
