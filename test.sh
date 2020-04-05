@@ -31,4 +31,4 @@ yarn graphql-codegen --config ./test/github/codegen.yml
 yarn tsc --noEmit ./output/github/output.ts
 
 # output some shit (only from the basic one, the advanced one blows the stack)
-yarn ts-node ./output/test-output.ts
+yarn ts-node ./test/test-output.ts
