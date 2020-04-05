@@ -69,15 +69,15 @@ you can use in your project.
 
 ## What's working?
 
-[X] Object types
-[X] Built-in Scalar types
-[X] Enumeration types
-[X] Type modifiers (1)
-[ ] Custom Scalar types (2)
-[X] Union types
-[X] Interface types (3)
-[ ] Input types (4)
-[ ] Documents (5)
+- [x] Object types
+- [x] Built-in Scalar types
+- [x] Enumeration types
+- [x] Type modifiers (1)
+- [ ] Custom Scalar types (2)
+- [x] Union types
+- [x] Interface types (3)
+- [ ] Input types (4)
+- [ ] Documents (5)
 
 1.  Currently lists work but we ignore the nullable / non-nullable distinction.
     Everything is non-nullable for now, this will come soon.
@@ -89,6 +89,11 @@ you can use in your project.
     a `func` `arbitrary` which should make this fairly straightforward to
     implement.
 5.  I haven't even thought about tackling this part yet.
+
+## Other notes
+
+Recursive declarations will utterly explode if you try and use them. I have a
+plan to implement a limit to stop this.
 
 ## Inspiration
 
