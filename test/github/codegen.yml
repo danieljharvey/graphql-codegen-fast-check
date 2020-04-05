@@ -1,0 +1,5 @@
+schema: ./test/github/github-schema.graphql
+# documents: './src/**/*.graphql'
+generates:
+  ./output/github/output.ts:
+    - ./dist/src/index.js
