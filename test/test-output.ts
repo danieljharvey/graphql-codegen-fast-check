@@ -1,4 +1,4 @@
-import * as generated from "./twitter/output";
+import * as generated from "../output/twitter/output";
 import * as fc from "fast-check";
 
 const items: any = { ...generated };
