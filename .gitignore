@@ -1,5 +1,5 @@
 .DS_Store
 yarn-error.log
 dist/
-output/*.ts
+output/**/*.ts
 node_modules/

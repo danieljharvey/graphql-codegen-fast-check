@@ -3,11 +3,8 @@
 # die if anything goes wrong
 set -euxo pipefail
 
-# install
-yarn install
-
-# build typescript
-yarn build
+# build and test
+./test.sh
 
 # publish
 npm publish
