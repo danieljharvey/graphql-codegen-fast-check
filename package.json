@@ -1,6 +1,6 @@
 {
   "name": "graphql-codegen-fast-check",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Daniel J. Harvey <daniel@internetisverymuchmybusiness.com> (https://danieljharvey.github.io/)",
   "main": "dist/src/index.js",
   "license": "MIT",
