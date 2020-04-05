@@ -3,8 +3,14 @@
 # die if anything goes wrong
 set -euxo pipefail
 
-# remove old output so it doesn't get typechecked
-echo "export const a = 1" | tee ./output/output.ts
+# replace twitter output with something that typechecks
+echo "export const a = 1" | tee ./output/twitter/output.ts
+
+# replace github output with something that typechecks
+echo "export const a = 1" | tee ./output/github/output.ts
+
+# install shit
+yarn install
 
 # run tests
 yarn test
@@ -13,10 +19,16 @@ yarn test
 yarn build
 
 # run codegen basic
-yarn graphql-codegen --config ./test/codegen.yml
+yarn graphql-codegen --config ./test/twitter/codegen.yml
 
 # typecheck result
-yarn tsc --noEmit ./output/output.ts
+yarn tsc --noEmit ./output/twitter/output.ts
 
-# output some shit
+# run codegen advanced
+yarn graphql-codegen --config ./test/github/codegen.yml
+
+# typecheck advanced result
+yarn tsc --noEmit ./output/github/output.ts
+
+# output some shit (only from the basic one, the advanced one blows the stack)
 yarn ts-node ./output/test-output.ts
