@@ -1,0 +1,519 @@
+
+{
+  "header": {
+    "reportVersion": 1,
+    "event": "Allocation failed - JavaScript heap out of memory",
+    "trigger": "FatalError",
+    "filename": "report.20200412.211204.7708.0.001.json",
+    "dumpEventTime": "2020-04-12T21:12:04Z",
+    "dumpEventTimeStamp": "1586722324491",
+    "processId": 7708,
+    "cwd": "/Users/daniel/Git/graphql-codegen-fast-check",
+    "commandLine": [
+      "/usr/local/Cellar/node/12.12.0/bin/node",
+      "/Users/daniel/Git/graphql-codegen-fast-check/node_modules/.bin/ts-node",
+      "./test/test-output.ts"
+    ],
+    "nodejsVersion": "v12.12.0",
+    "wordSize": 64,
+    "arch": "x64",
+    "platform": "darwin",
+    "componentVersions": {
+      "node": "12.12.0",
+      "v8": "7.7.299.13-node.12",
+      "uv": "1.32.0",
+      "zlib": "1.2.11",
+      "brotli": "1.0.7",
+      "ares": "1.15.0",
+      "modules": "72",
+      "nghttp2": "1.39.2",
+      "napi": "5",
+      "llhttp": "1.1.4",
+      "http_parser": "2.8.0",
+      "openssl": "1.1.1d",
+      "cldr": "35.1",
+      "icu": "64.2",
+      "tz": "2019a",
+      "unicode": "12.1"
+    },
+    "release": {
+      "name": "node",
+      "headersUrl": "https://nodejs.org/download/release/v12.12.0/node-v12.12.0-headers.tar.gz",
+      "sourceUrl": "https://nodejs.org/download/release/v12.12.0/node-v12.12.0.tar.gz"
+    },
+    "osName": "Darwin",
+    "osRelease": "18.7.0",
+    "osVersion": "Darwin Kernel Version 18.7.0: Thu Jan 23 06:52:12 PST 2020; root:xnu-4903.278.25~1/RELEASE_X86_64",
+    "osMachine": "x86_64",
+    "cpus": [
+      {
+        "model": "Intel(R) Core(TM) i5-7360U CPU @ 2.30GHz",
+        "speed": 2300,
+        "user": 1280360,
+        "nice": 0,
+        "sys": 303320,
+        "idle": 2148930,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i5-7360U CPU @ 2.30GHz",
+        "speed": 2300,
+        "user": 347860,
+        "nice": 0,
+        "sys": 104680,
+        "idle": 3279560,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i5-7360U CPU @ 2.30GHz",
+        "speed": 2300,
+        "user": 1280410,
+        "nice": 0,
+        "sys": 247230,
+        "idle": 2204460,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i5-7360U CPU @ 2.30GHz",
+        "speed": 2300,
+        "user": 325470,
+        "nice": 0,
+        "sys": 87980,
+        "idle": 3318640,
+        "irq": 0
+      }
+    ],
+    "networkInterfaces": [
+      {
+        "name": "lo0",
+        "internal": true,
+        "mac": "00:00:00:00:00:00",
+        "address": "127.0.0.1",
+        "netmask": "255.0.0.0",
+        "family": "IPv4"
+      },
+      {
+        "name": "lo0",
+        "internal": true,
+        "mac": "00:00:00:00:00:00",
+        "address": "::1",
+        "netmask": "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+        "family": "IPv6",
+        "scopeid": 0
+      },
+      {
+        "name": "lo0",
+        "internal": true,
+        "mac": "00:00:00:00:00:00",
+        "address": "fe80::1",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 1
+      },
+      {
+        "name": "lo0",
+        "internal": true,
+        "mac": "00:00:00:00:00:00",
+        "address": "127.94.0.2",
+        "netmask": "255.0.0.0",
+        "family": "IPv4"
+      },
+      {
+        "name": "lo0",
+        "internal": true,
+        "mac": "00:00:00:00:00:00",
+        "address": "127.94.0.1",
+        "netmask": "255.0.0.0",
+        "family": "IPv4"
+      },
+      {
+        "name": "en0",
+        "internal": false,
+        "mac": "f0:18:98:81:01:0f",
+        "address": "fe80::4fd:d06a:4cb2:6d6f",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 6
+      },
+      {
+        "name": "en0",
+        "internal": false,
+        "mac": "f0:18:98:81:01:0f",
+        "address": "192.168.0.41",
+        "netmask": "255.255.255.0",
+        "family": "IPv4"
+      },
+      {
+        "name": "en0",
+        "internal": false,
+        "mac": "f0:18:98:81:01:0f",
+        "address": "fd04:38a:caa3:0:1f:ea9d:6ec6:8058",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 0
+      },
+      {
+        "name": "en0",
+        "internal": false,
+        "mac": "f0:18:98:81:01:0f",
+        "address": "fd04:38a:caa3:0:ec79:7d65:ef69:4b9c",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 0
+      },
+      {
+        "name": "en0",
+        "internal": false,
+        "mac": "f0:18:98:81:01:0f",
+        "address": "2a02:c7d:cc5:ba00:1802:d2f9:494:d594",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 0
+      },
+      {
+        "name": "en0",
+        "internal": false,
+        "mac": "f0:18:98:81:01:0f",
+        "address": "2a02:c7d:cc5:ba00:acf8:f59a:8b00:99bb",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 0
+      },
+      {
+        "name": "awdl0",
+        "internal": false,
+        "mac": "c6:20:e6:a6:8d:64",
+        "address": "fe80::c420:e6ff:fea6:8d64",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 8
+      },
+      {
+        "name": "utun0",
+        "internal": false,
+        "mac": "00:00:00:00:00:00",
+        "address": "fe80::7174:dacf:7d1d:2f7d",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 12
+      }
+    ],
+    "host": "Daniels-MBP"
+  },
+  "javascriptStack": {
+    "message": "No stack.",
+    "stack": [
+      "Unavailable."
+    ]
+  },
+  "nativeStack": [
+    {
+      "pc": "0x00000001001515eb",
+      "symbol": "report::TriggerNodeReport(v8::Isolate*, node::Environment*, char const*, char const*, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&, v8::Local<v8::String>) [/usr/local/Cellar/node/12.12.0/bin/node]"
+    },
+    {
+      "pc": "0x0000000100082067",
+      "symbol": "node::OnFatalError(char const*, char const*) [/usr/local/Cellar/node/12.12.0/bin/node]"
+    },
+    {
+      "pc": "0x000000010017461d",
+      "symbol": "v8::Utils::ReportOOMFailure(v8::internal::Isolate*, char const*, bool) [/usr/local/Cellar/node/12.12.0/bin/node]"
+    },
+    {
+      "pc": "0x00000001001745c7",
+      "symbol": "v8::internal::V8::FatalProcessOutOfMemory(v8::internal::Isolate*, char const*, bool) [/usr/local/Cellar/node/12.12.0/bin/node]"
+    },
+    {
+      "pc": "0x000000010028a569",
+      "symbol": "v8::internal::Heap::FatalProcessOutOfMemory(char const*) [/usr/local/Cellar/node/12.12.0/bin/node]"
+    },
+    {
+      "pc": "0x000000010028b8ee",
+      "symbol": "v8::internal::Heap::MarkCompactPrologue() [/usr/local/Cellar/node/12.12.0/bin/node]"
+    },
+    {
+      "pc": "0x00000001002894eb",
+      "symbol": "v8::internal::Heap::PerformGarbageCollection(v8::internal::GarbageCollector, v8::GCCallbackFlags) [/usr/local/Cellar/node/12.12.0/bin/node]"
+    },
+    {
+      "pc": "0x0000000100287f93",
+      "symbol": "v8::internal::Heap::CollectGarbage(v8::internal::AllocationSpace, v8::internal::GarbageCollectionReason, v8::GCCallbackFlags) [/usr/local/Cellar/node/12.12.0/bin/node]"
+    },
+    {
+      "pc": "0x000000010028f6da",
+      "symbol": "v8::internal::Heap::AllocateRawWithLightRetry(int, v8::internal::AllocationType, v8::internal::AllocationAlignment) [/usr/local/Cellar/node/12.12.0/bin/node]"
+    },
+    {
+      "pc": "0x000000010028fbd0",
+      "symbol": "v8::internal::Heap::AllocateRawWithRetryOrFail(int, v8::internal::AllocationType, v8::internal::AllocationAlignment) [/usr/local/Cellar/node/12.12.0/bin/node]"
+    },
+    {
+      "pc": "0x000000010026d8c6",
+      "symbol": "v8::internal::Factory::NewFillerObject(int, bool, v8::internal::AllocationType) [/usr/local/Cellar/node/12.12.0/bin/node]"
+    },
+    {
+      "pc": "0x00000001004bc90e",
+      "symbol": "v8::internal::Runtime_AllocateInOldGeneration(int, unsigned long*, v8::internal::Isolate*) [/usr/local/Cellar/node/12.12.0/bin/node]"
+    },
+    {
+      "pc": "0x000000010072e699",
+      "symbol": "Builtins_CEntry_Return1_DontSaveFPRegs_ArgvOnStack_NoBuiltinExit [/usr/local/Cellar/node/12.12.0/bin/node]"
+    }
+  ],
+  "javascriptHeap": {
+    "totalMemory": 2160414720,
+    "totalCommittedMemory": 2155009592,
+    "usedMemory": 1949013040,
+    "availableMemory": 83933760,
+    "memoryLimit": 2197815296,
+    "heapSpaces": {
+      "read_only_space": {
+        "memorySize": 262144,
+        "committedMemory": 32568,
+        "capacity": 261872,
+        "used": 32296,
+        "available": 229576
+      },
+      "new_space": {
+        "memorySize": 8388608,
+        "committedMemory": 3837072,
+        "capacity": 4189952,
+        "used": 978624,
+        "available": 3211328
+      },
+      "old_space": {
+        "memorySize": 1850585088,
+        "committedMemory": 1850294960,
+        "capacity": 1765555512,
+        "used": 1726653184,
+        "available": 38902328
+      },
+      "code_space": {
+        "memorySize": 2785280,
+        "committedMemory": 2483968,
+        "capacity": 2109920,
+        "used": 2109920,
+        "available": 0
+      },
+      "map_space": {
+        "memorySize": 266342400,
+        "committedMemory": 266309824,
+        "capacity": 187267280,
+        "used": 187267280,
+        "available": 0
+      },
+      "large_object_space": {
+        "memorySize": 32002048,
+        "committedMemory": 32002048,
+        "capacity": 31968184,
+        "used": 31968184,
+        "available": 0
+      },
+      "code_large_object_space": {
+        "memorySize": 49152,
+        "committedMemory": 49152,
+        "capacity": 3552,
+        "used": 3552,
+        "available": 0
+      },
+      "new_large_object_space": {
+        "memorySize": 0,
+        "committedMemory": 0,
+        "capacity": 4189952,
+        "used": 0,
+        "available": 4189952
+      }
+    }
+  },
+  "resourceUsage": {
+    "userCpuSeconds": 56.592,
+    "kernelCpuSeconds": 1.90274,
+    "cpuConsumptionPercent": 194.982,
+    "maxRss": 2327943577600,
+    "pageFaults": {
+      "IORequired": 2,
+      "IONotRequired": 716042
+    },
+    "fsActivity": {
+      "reads": 0,
+      "writes": 0
+    }
+  },
+  "libuv": [
+  ],
+  "environmentVariables": {
+    "NIX_PROFILES": "/nix/var/nix/profiles/default /Users/daniel/.nix-profile",
+    "TERM_PROGRAM": "iTerm.app",
+    "npm_package_scripts_run_codegen": "./test.sh",
+    "NODE": "/usr/local/Cellar/node/12.12.0/bin/node",
+    "INIT_CWD": "/Users/daniel/Git/graphql-codegen-fast-check",
+    "npm_package_devDependencies_typescript": "^3.8.3",
+    "npm_config_version_git_tag": "true",
+    "TERM": "xterm-256color",
+    "SHELL": "/usr/local/bin/zsh",
+    "npm_package_devDependencies_jest": "^25.2.4",
+    "TMPDIR": "/var/folders/wr/6x1pljd9769bb4gd70zxw99m0000gn/T/",
+    "Apple_PubSub_Socket_Render": "/private/tmp/com.apple.launchd.eLvnmTXzNa/Render",
+    "npm_config_init_license": "MIT",
+    "TERM_PROGRAM_VERSION": "3.3.9",
+    "npm_package_peerDependencies__graphql_codegen_cli": "^1.13.1",
+    "TERM_SESSION_ID": "w0t0p0:C4EDCE98-13E5-4D79-8063-182E21727A99",
+    "npm_config_registry": "https://registry.yarnpkg.com",
+    "ZSH": "/Users/daniel/.oh-my-zsh",
+    "npm_package_readmeFilename": "README.md",
+    "USER": "daniel",
+    "npm_package_description": "## What?",
+    "npm_package_scripts_codegen": "graphql-codegen",
+    "npm_package_license": "MIT",
+    "SSH_AUTH_SOCK": "/private/tmp/com.apple.launchd.sKEZvvpPgr/Listeners",
+    "__CF_USER_TEXT_ENCODING": "0x1F5:0x0:0x2",
+    "npm_package_devDependencies__types_jest": "^25.1.4",
+    "npm_execpath": "/usr/local/lib/node_modules/yarn/bin/yarn.js",
+    "npm_package_peerDependencies_graphql": "^14.6.0",
+    "npm_package_dependencies_prettier": "^2.0.2",
+    "PAGER": "less",
+    "TMUX": "/tmp//tmux-501/default,1225,0",
+    "npm_package_author_name": "Daniel J. Harvey",
+    "LSCOLORS": "Gxfxcxdxbxegedabagacad",
+    "npm_package_devDependencies__graphql_codegen_cli": "^1.13.1",
+    "npm_package_scripts_typescript_watch": "tsc --noEmit --watch",
+    "PATH": "/var/folders/wr/6x1pljd9769bb4gd70zxw99m0000gn/T/yarn--1586722293707-0.656501657378946:/Users/daniel/Git/graphql-codegen-fast-check/node_modules/.bin:/Users/daniel/.config/yarn/link/node_modules/.bin:/usr/local/Cellar/node/12.12.0/libexec/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/Cellar/node/12.12.0/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/Cellar/node/12.12.0/bin/node_modules/npm/bin/node-gyp-bin:/Users/daniel/.cargo/bin:/Users/daniel/.nix-profile/bin:/Users/daniel/.local/bin:/Users/daniel/.cargo/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/daniel/.cargo/bin:/Users/daniel/.nix-profile/bin:/Users/daniel/.local/bin",
+    "npm_config_argv": "{\"remain\":[],\"cooked\":[\"run\",\"ts-node\"],\"original\":[\"ts-node\",\"./test/test-output.ts\"]}",
+    "_": "/Users/daniel/Git/graphql-codegen-fast-check/node_modules/.bin/ts-node",
+    "npm_package_devDependencies_ts_jest": "^25.3.1",
+    "PWD": "/Users/daniel/Git/graphql-codegen-fast-check",
+    "NIX_PATH": "/Users/daniel/.nix-defexpr/channels:/Users/daniel/.nix-defexpr/channels",
+    "npm_package_scripts_test_watch": "jest --watch",
+    "npm_package_author_url": "https://danieljharvey.github.io/",
+    "npm_lifecycle_event": "ts-node",
+    "LANG": "en_GB.UTF-8",
+    "npm_package_name": "graphql-codegen-fast-check",
+    "ITERM_PROFILE": "Default",
+    "npm_package_scripts_build": "tsc",
+    "npm_config_version_commit_hooks": "true",
+    "XPC_FLAGS": "0x0",
+    "TMUX_PANE": "%1",
+    "NIX_SSL_CERT_FILE": "/Users/daniel/.nix-profile/etc/ssl/certs/ca-bundle.crt",
+    "npm_config_bin_links": "true",
+    "npm_package_main": "dist/src/index.js",
+    "XPC_SERVICE_NAME": "0",
+    "npm_package_version": "0.0.2",
+    "SHLVL": "4",
+    "HOME": "/Users/daniel",
+    "COLORFGBG": "11;15",
+    "npm_package_scripts_test": "jest",
+    "LC_TERMINAL_VERSION": "3.3.9",
+    "npm_package_devDependencies_graphql": "^14.6.0",
+    "npm_config_save_prefix": "^",
+    "npm_config_strict_ssl": "true",
+    "npm_config_version_git_message": "v%s",
+    "ITERM_SESSION_ID": "w0t0p0:C4EDCE98-13E5-4D79-8063-182E21727A99",
+    "npm_package_devDependencies_ts_node": "^8.8.1",
+    "LOGNAME": "daniel",
+    "LESS": "-R",
+    "YARN_WRAP_OUTPUT": "false",
+    "npm_package_devDependencies__types_graphql": "^14.5.0",
+    "npm_package_author_email": "daniel@internetisverymuchmybusiness.com",
+    "npm_config_version_git_sign": "",
+    "npm_config_ignore_scripts": "",
+    "npm_config_user_agent": "yarn/1.21.1 npm/? node/v12.12.0 darwin x64",
+    "npm_package_devDependencies__types_node": "^13.9.8",
+    "LC_TERMINAL": "iTerm2",
+    "npm_package_devDependencies_fast_check": "^1.23.0",
+    "npm_package_devDependencies__types_prettier": "^1.19.1",
+    "npm_config_init_version": "1.0.0",
+    "npm_config_ignore_optional": "",
+    "COLORTERM": "truecolor",
+    "npm_node_execpath": "/usr/local/Cellar/node/12.12.0/bin/node",
+    "npm_config_version_tag_prefix": "v"
+  },
+  "userLimits": {
+    "core_file_size_blocks": {
+      "soft": 0,
+      "hard": "unlimited"
+    },
+    "data_seg_size_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "file_size_blocks": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "max_locked_memory_bytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "max_memory_size_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "open_files": {
+      "soft": 10240,
+      "hard": "unlimited"
+    },
+    "stack_size_bytes": {
+      "soft": 8388608,
+      "hard": 67104768
+    },
+    "cpu_time_seconds": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "max_user_processes": {
+      "soft": 709,
+      "hard": 709
+    },
+    "virtual_memory_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    }
+  },
+  "sharedObjects": [
+    "/usr/local/Cellar/node/12.12.0/bin/node",
+    "/usr/local/opt/icu4c/lib/libicui18n.64.dylib",
+    "/usr/local/opt/icu4c/lib/libicuuc.64.dylib",
+    "/usr/local/opt/icu4c/lib/libicudata.64.dylib",
+    "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+    "/usr/lib/libSystem.B.dylib",
+    "/usr/lib/libc++.1.dylib",
+    "/usr/lib/system/libcache.dylib",
+    "/usr/lib/system/libcommonCrypto.dylib",
+    "/usr/lib/system/libcompiler_rt.dylib",
+    "/usr/lib/system/libcopyfile.dylib",
+    "/usr/lib/system/libcorecrypto.dylib",
+    "/usr/lib/system/libdispatch.dylib",
+    "/usr/lib/system/libdyld.dylib",
+    "/usr/lib/system/libkeymgr.dylib",
+    "/usr/lib/system/liblaunch.dylib",
+    "/usr/lib/system/libmacho.dylib",
+    "/usr/lib/system/libquarantine.dylib",
+    "/usr/lib/system/libremovefile.dylib",
+    "/usr/lib/system/libsystem_asl.dylib",
+    "/usr/lib/system/libsystem_blocks.dylib",
+    "/usr/lib/system/libsystem_c.dylib",
+    "/usr/lib/system/libsystem_configuration.dylib",
+    "/usr/lib/system/libsystem_coreservices.dylib",
+    "/usr/lib/system/libsystem_darwin.dylib",
+    "/usr/lib/system/libsystem_dnssd.dylib",
+    "/usr/lib/system/libsystem_info.dylib",
+    "/usr/lib/system/libsystem_m.dylib",
+    "/usr/lib/system/libsystem_malloc.dylib",
+    "/usr/lib/system/libsystem_networkextension.dylib",
+    "/usr/lib/system/libsystem_notify.dylib",
+    "/usr/lib/system/libsystem_sandbox.dylib",
+    "/usr/lib/system/libsystem_secinit.dylib",
+    "/usr/lib/system/libsystem_kernel.dylib",
+    "/usr/lib/system/libsystem_platform.dylib",
+    "/usr/lib/system/libsystem_pthread.dylib",
+    "/usr/lib/system/libsystem_symptoms.dylib",
+    "/usr/lib/system/libsystem_trace.dylib",
+    "/usr/lib/system/libunwind.dylib",
+    "/usr/lib/system/libxpc.dylib",
+    "/usr/lib/libobjc.A.dylib",
+    "/usr/lib/libc++abi.dylib",
+    "/usr/lib/libDiagnosticMessagesClient.dylib",
+    "/usr/lib/libicucore.A.dylib",
+    "/usr/lib/libz.1.dylib"
+  ]
+}

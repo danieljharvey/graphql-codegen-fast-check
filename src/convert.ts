@@ -30,7 +30,9 @@ type FieldReturn = {
 
 const withNamedFieldType = (namedTypeNode: NamedTypeNode): FieldReturn => {
   const name = namedTypeNode.name.value as TypeName;
-  const output = `${getArbitraryName(name)}()` as Generated;
+  const output = `(limit > 0) ? ${getArbitraryName(
+    name
+  )}(limit - 1) : fc.constant(null)` as Generated;
   return { output, deps: [name] };
 };
 
@@ -193,107 +195,15 @@ const removeKind = (k: Kind) => (a: Output) => a.kind !== k;
 
 const render = (val: Output) => {
   const { name, output } = val;
+  const recurseLimit = 10;
   return `export const ${getArbitraryName(
     name
-  )} = (): fc.Arbitrary<any> => ${output}`;
+  )} = (limit = ${recurseLimit}): fc.Arbitrary<any> => ${output}`;
 };
 
 export const getSchemaDeclarations = (schema: GraphQLSchema): string =>
-  sortASTs2(getNamedTypes(schema).map(withNamedType).filter(notNull))
+  getNamedTypes(schema)
+    .map(withNamedType)
+    .filter(notNull)
     .map(render)
     .join("\n\n");
-
-const sortASTs2 = <A>(a: A): A => a;
-
-const filterSplit = <A>(
-  as: A[],
-  f: (a: A) => boolean
-): { yes: A[]; no: A[] } => ({
-  yes: as.filter(f),
-  no: as.filter(a => !f(a))
-});
-
-export const sortASTs = (as: Output[]): Output[] => {
-  const limit = 10000;
-  return caseEither(magicSort(as, limit), {
-    onRight: payload => payload,
-    onLeft: err => {
-      throw err;
-      return [];
-    }
-  });
-};
-
-const showProgress = (used: Output[], remaining: Output[]): void => {
-  const unresolved = [
-    ...new Set(remaining.map(a => a.deps).reduce((as, a) => as.concat(a), []))
-  ];
-  const resolved = used.map(a => a.name);
-  console.log("RESOLVED", resolved);
-  console.log("UNRESOLVED", unresolved);
-};
-
-export const magicSort = (
-  as: Output[],
-  startingLimit: number
-): Either<string, Output[]> => {
-  let limit = startingLimit;
-  let newRemaining = as;
-  let newUsed: Output[] = [];
-  let error = `Could not resolve ordering within ${startingLimit} tries`;
-  while (newRemaining.length > 0 && limit > 0) {
-    const succeeded = caseEither(moveASTs(newUsed, newRemaining), {
-      onRight: payload => {
-        newUsed = payload.used;
-        newRemaining = payload.remaining;
-        limit = limit - 1;
-        return true;
-      },
-      onLeft: err => {
-        error = err;
-        return false;
-      }
-    });
-    // showProgress(newUsed, newRemaining);
-    if (!succeeded) {
-      break;
-    }
-  }
-  if (newRemaining.length > 0) {
-    return left(error);
-  }
-  return right(newUsed);
-};
-
-type ASTReturn = Either<
-  string,
-  {
-    used: Output[];
-    remaining: Output[];
-  }
->;
-
-export const moveASTs = (used: Output[], remaining: Output[]): ASTReturn => {
-  // remove everything in used from deps list
-  const usedDeps = used.map(a => a.name);
-
-  const remainingFiltered = remaining.map(a => ({
-    ...a,
-    deps: a.deps.filter(dep => !usedDeps.includes(dep))
-  }));
-
-  // move everything with empty deps list left
-  const { yes: moved, no: keep } = filterSplit(
-    remainingFiltered,
-    a => a.deps.length === 0
-  );
-
-  // done
-  const newUsed = [...used, ...moved];
-  if (newUsed.length === used.length) {
-    return left(
-      `No changes made, unresolvable. ${newUsed.length} moved, ${keep.length} remaining to move.`
-    );
-  }
-  return right({ used: newUsed, remaining: keep });
-};

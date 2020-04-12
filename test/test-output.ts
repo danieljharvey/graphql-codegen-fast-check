@@ -1,16 +1,32 @@
-import * as generated from "../output/twitter/output";
+import * as twitter from "../output/twitter/output";
+import * as github from "../output/github/output";
 import * as fc from "fast-check";
 
-const items: any = { ...generated };
+const twitterItems: any = { ...twitter };
 
-Object.keys(items).forEach((key: string) => {
-  const func = items[key];
-  console.log(`---------------${key}-----------------`);
-  const arb = (func as any)();
-  fc.assert(
-    fc.property(arb, a => {
-      console.log(a);
-      return true;
-    })
-  );
-});
+Object.keys(twitterItems)
+  .map((key: string) => {
+    const func = twitterItems[key];
+    const arb = (func as any)();
+    return [key, fc.sample(arb, 1)[0]];
+  })
+  .map(console.log);
+
+const githubItems: any = { ...github };
+
+console.log("github has ", Object.keys(githubItems).length, " items");
+
+const someKeys = Object.keys(githubItems); // .slice(0, 110);
+
+console.log("lets try out ", someKeys.length, " first");
+
+// we can override this for fucking huge things that blow the stack
+const recurseLimit = 4;
+
+someKeys
+  .map((key: string) => {
+    const func = githubItems[key];
+    const arb = (func as any)(recurseLimit);
+    return [key, fc.sample(arb, 1)[0]];
+  })
+  .map(console.log);
